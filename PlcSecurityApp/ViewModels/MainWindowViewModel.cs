@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using PlcSecurityApp.Core;
 using PlcSecurityApp.Core.Lib;
+using PlcSecurityApp.Views.Controls;
 
 namespace PlcSecurityApp.ViewModels
 {
@@ -33,17 +34,17 @@ namespace PlcSecurityApp.ViewModels
 
         private void GlassSensorCommandHandler(object obj)
         {
-            MessageBox.Show("Glass Sensor");
+            // MessageBox.Show("Glass Sensor");
         }
 
         private void MotionSensorCommandHandler(object o)
         {
-            MessageBox.Show("Motion Sensor");
+            // MessageBox.Show("Motion Sensor");
         }
 
         private void DoorSensorCommandHandler(object o)
         {
-            MessageBox.Show("Door Sensor");
+
         }
 
         public void ConnectCommandHandler(object obj)

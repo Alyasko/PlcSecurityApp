@@ -98,7 +98,7 @@
     <Compile Include="Views\Controls\Sensor\Sensor.xaml.cs">
       <DependentUpon>Sensor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\Sensor\SensorSize.cs" />
+    <Compile Include="Views\Controls\Sensor\SensorState.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

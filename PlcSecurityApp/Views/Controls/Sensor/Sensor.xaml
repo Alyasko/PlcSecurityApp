@@ -12,8 +12,18 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Ellipse Width="50" Height="50" Name="SensorEllipse" Fill="Green"></Ellipse>  
-        <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">OK</TextBlock>
+        <Ellipse Width="50" Height="50" Name="SensorEllipse" Fill="{Binding SensorFill, ElementName=Root}">
+            <Ellipse.Style>
+                <Style>
+                    <Style.Triggers>
+                        <Trigger Property="Ellipse.IsMouseOver" Value="True">
+                            <Setter Property="Ellipse.Opacity" Value="0.8"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>
+        <TextBlock IsHitTestVisible="False" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Text="{Binding SensorText, ElementName=Root}"></TextBlock>
         <TextBlock Margin="20" Grid.Column="1" VerticalAlignment="Center" Text="{Binding SensorName, ElementName=Root}"></TextBlock>
     </Grid>
 </UserControl>

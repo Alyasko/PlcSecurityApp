@@ -5,9 +5,9 @@ using System.Text;
 
 namespace PlcSecurityApp.Views.Controls
 {
-    public enum SensorSize
+    public enum SensorState
     {
-        Big,
-        Small
+        Ok,
+        Alert
     }
 }
