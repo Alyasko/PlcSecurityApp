@@ -58,7 +58,7 @@
     <Reference Include="Interop.S7PROSIMLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>bin\x86\Debug\Interop.S7PROSIMLib.dll</HintPath>
+      <HintPath>..\dlls\Interop.S7PROSIMLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -91,8 +91,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\IPlcSimulator.cs" />
     <Compile Include="Core\Lib\DelegateCommand.cs" />
     <Compile Include="Core\PlcSimulator.cs" />
+    <Compile Include="Models\SystemState.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorViewModel.cs" />
     <Compile Include="Views\Controls\Sensor\Sensor.xaml.cs">
@@ -132,7 +134,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

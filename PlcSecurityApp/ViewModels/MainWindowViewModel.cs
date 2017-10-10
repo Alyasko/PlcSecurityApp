@@ -9,18 +9,21 @@ using System.Windows;
 using System.Windows.Input;
 using PlcSecurityApp.Core;
 using PlcSecurityApp.Core.Lib;
+using PlcSecurityApp.Models;
 using PlcSecurityApp.Views.Controls;
 
 namespace PlcSecurityApp.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        private PlcSimulator _simulator;
+        private IPlcSimulator _simulator;
+        private SystemState _systemState;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
             //_simulator = new PlcSimulator();
+            SystemState = new SystemState();
 
             ConnectCommand = new DelegateCommand(ConnectCommandHandler);
             DoorSensorCommand = new DelegateCommand(DoorSensorCommandHandler);
@@ -30,6 +33,9 @@ namespace PlcSecurityApp.ViewModels
             DoorSensorViewModel = new SensorViewModel();
             GlassSensorViewModel = new SensorViewModel();
             MotionSensorViewModel = new SensorViewModel();
+
+            _simulator?.Connect();
+            var currentState = _simulator?.GetSystemState();
         }
 
         private void GlassSensorCommandHandler(object obj)
@@ -49,7 +55,19 @@ namespace PlcSecurityApp.ViewModels
 
         public void ConnectCommandHandler(object obj)
         {
-            _simulator.Connect();
+            // _simulator.Connect();
+            // For test now.
+            SystemState.DoorSensor = SensorState.Alert;
+        }
+
+        private void UpdateSystemState(SystemState state)
+        {
+            
+        }
+
+        private SensorState ConvertBoolToSensorState(bool state)
+        {
+            return state ? SensorState.Ok : SensorState.Alert;
         }
 
         public String WindowTitle { get; set; } = "PLC Security App";
@@ -63,6 +81,19 @@ namespace PlcSecurityApp.ViewModels
         public SensorViewModel DoorSensorViewModel { get; set; }
         public SensorViewModel MotionSensorViewModel { get; set; }
         public SensorViewModel GlassSensorViewModel { get; set; }
+
+        public SystemState SystemState
+        {
+            get
+            {
+                return _systemState;
+            }
+            set
+            {
+                _systemState = value; 
+                OnPropertyChanged();
+            }
+        }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {

@@ -8,6 +8,7 @@
         xmlns:controls="clr-namespace:PlcSecurityApp.Views.Controls"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
         Title="{Binding WindowTitle}" Height="357" Width="525">
     <Grid>
@@ -20,6 +21,7 @@
             <MenuItem Header="Simulator">
                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Test" Command="{Binding ConnectCommand}"></MenuItem>
         </Menu>
 
         <Grid Grid.Row="1">
@@ -33,7 +35,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <controls:Sensor Grid.Row="0" Grid.Column="0" Margin="10" StateChangedCommand="{Binding DoorSensorCommand}" SensorName="Door sensor"></controls:Sensor>
+            <controls:Sensor SensorState="{Binding SystemState.DoorSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Margin="10" StateChangedCommand="{Binding DoorSensorCommand}" SensorName="Door sensor"></controls:Sensor>
             <controls:Sensor Grid.Row="1" Grid.Column="0" Margin="10" StateChangedCommand="{Binding MotionSensorCommand}" SensorName="Motion sensor"></controls:Sensor>
             <controls:Sensor Grid.Row="2" Grid.Column="0" Margin="10" StateChangedCommand="{Binding GlassSensorCommand}" SensorName="Glass sensor"></controls:Sensor>
             

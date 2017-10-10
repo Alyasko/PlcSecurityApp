@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using PlcSecurityApp.Models;
 using S7PROSIMLib;
 
 namespace PlcSecurityApp.Core
 {
-    class PlcSimulator
+    class PlcSimulator : IPlcSimulator
     {
         private S7ProSim _proSim;
 
@@ -31,6 +32,11 @@ namespace PlcSecurityApp.Core
             MessageBox.Show($"Output pin state: {state}");
 
             _proSim.WriteInputPoint(0, 0, true);
+        }
+
+        public SystemState GetSystemState()
+        {
+            throw new NotImplementedException();
         }
     }
 }

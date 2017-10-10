@@ -25,7 +25,6 @@ namespace PlcSecurityApp.Views.Controls
             get { return (SensorState)GetValue(SensorStateProperty); }
             set
             {
-                UpdateSensorState(value);
                 SetValue(SensorStateProperty, value);
             }
         }
@@ -70,7 +69,10 @@ namespace PlcSecurityApp.Views.Controls
         public static readonly DependencyProperty OnlyOutputProperty =
             DependencyProperty.Register("OnlyOutput", typeof(bool), typeof(Sensor), new PropertyMetadata(false));
 
-
+        public void Refresh()
+        {
+            UpdateSensorState(SensorState);
+        }
 
         private string _sensorText;
         public string SensorText
@@ -99,6 +101,8 @@ namespace PlcSecurityApp.Views.Controls
             InitializeComponent();
 
             SensorState = SensorState.Ok;
+
+            Refresh();
         }
 
         private void Sensor_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -110,6 +114,8 @@ namespace PlcSecurityApp.Views.Controls
                 SensorState = SensorState.Ok;
             else if (SensorState == SensorState.Ok)
                 SensorState = SensorState.Alert;
+
+            Refresh();
 
             StateChangedCommand?.Execute(SensorState);
         }
