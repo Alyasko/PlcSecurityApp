@@ -79,6 +79,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\Controls\Sensor\Sensor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +95,10 @@
     <Compile Include="Core\PlcSimulator.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SensorViewModel.cs" />
+    <Compile Include="Views\Controls\Sensor\Sensor.xaml.cs">
+      <DependentUpon>Sensor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Sensor\SensorSize.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

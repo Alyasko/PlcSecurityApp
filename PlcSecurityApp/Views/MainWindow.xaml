@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlcSecurityApp"
         xmlns:vm="clr-namespace:PlcSecurityApp.ViewModels"
+        xmlns:controls="clr-namespace:PlcSecurityApp.Views.Controls"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
@@ -21,36 +22,21 @@
             </MenuItem>
         </Menu>
 
-        <Canvas Grid.Row="1" Background="White">
-            <Ellipse Name="DoorSensor" Width="50" Height="50" Fill="{Binding DoorSensorViewModel.FillColor}" Canvas.Left="30" Canvas.Top="30">
-                <Ellipse.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding DoorSensorCommand}"/>
-                </Ellipse.InputBindings>
-            </Ellipse>
-            <TextBlock IsHitTestVisible="False" Canvas.Left="47" Canvas.Top="48" Foreground="White" Text="{Binding DoorSensorViewModel.Text}" FontWeight="Bold"></TextBlock>
-            <TextBlock Canvas.Top="47" Canvas.Left="100">Door Sensor</TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-
-            <Ellipse Name="MotionSensor" Width="50" Height="50" Fill="Green" Canvas.Left="30" Canvas.Top="130">
-                <Ellipse.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding MotionSensorCommand}"></MouseBinding>
-                </Ellipse.InputBindings>
-            </Ellipse>
-            <TextBlock IsHitTestVisible="False" Canvas.Left="47" Canvas.Top="147" Foreground="White" FontWeight="Bold">OK</TextBlock>
-            <TextBlock Canvas.Top="147" Canvas.Left="100">Motion Sensor</TextBlock>
-
-            <Ellipse Name="GlassSensor" Width="50" Height="50" Fill="Green" Canvas.Left="30" Canvas.Top="230">
-                <Ellipse.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding GlassSensorCommand}"></MouseBinding>
-                </Ellipse.InputBindings>
-            </Ellipse>
-            <TextBlock IsHitTestVisible="False" Canvas.Left="47" Canvas.Top="247" Foreground="White" FontWeight="Bold">OK</TextBlock>
-            <TextBlock Canvas.Top="247" Canvas.Left="100">Glass Sensor</TextBlock>
-
-            <Ellipse Width="100" Height="100" Fill="Green" Canvas.Left="312" Canvas.Top="105"></Ellipse>
-            <TextBlock Canvas.Top="141" Canvas.Left="312" Foreground="White" FontSize="20" TextAlignment="Center" Width="100">OK</TextBlock>
-            <TextBlock Canvas.Top="147" Canvas.Left="437">Alarm</TextBlock>
-        </Canvas>
+            <controls:Sensor Grid.Row="0" Grid.Column="0" Margin="10" StateChangedCommand="{Binding DoorSensorCommand}" SensorName="Door sensor"></controls:Sensor>
+            <controls:Sensor Grid.Row="1" Grid.Column="0" Margin="10" StateChangedCommand="{Binding MotionSensorCommand}" SensorName="Motion sensor"></controls:Sensor>
+            <controls:Sensor Grid.Row="2" Grid.Column="0" Margin="10" StateChangedCommand="{Binding GlassSensorCommand}" SensorName="Glass sensor"></controls:Sensor>
+        </Grid>
 
     </Grid>
 </Window>
