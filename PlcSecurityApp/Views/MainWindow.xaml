@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PlcSecurityApp"
         xmlns:vm="clr-namespace:PlcSecurityApp.ViewModels"
         xmlns:controls="clr-namespace:PlcSecurityApp.Views.Controls"
+        xmlns:uc="clr-namespace:PlcSecurityApp.Views.UC"
         mc:Ignorable="d"
+        x:Name="MainWindow1"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
@@ -31,15 +33,15 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <controls:Sensor SensorState="{Binding DoorSensorState}" Grid.Row="0" Grid.Column="0" Margin="10" StateChangedCommand="{Binding DoorSensorCommand}" SensorName="Door sensor"></controls:Sensor>
-            <controls:Sensor Grid.Row="1" Grid.Column="0" Margin="10" StateChangedCommand="{Binding MotionSensorCommand}" SensorName="Motion sensor"></controls:Sensor>
-            <controls:Sensor Grid.Row="2" Grid.Column="0" Margin="10" StateChangedCommand="{Binding GlassSensorCommand}" SensorName="Glass sensor"></controls:Sensor>
-            
-            <controls:Sensor OnlyOutput="True" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="10" SensorName="Alarm"></controls:Sensor>
+            <uc:SecuritySensor StateChangedCommand="{Binding DoorSensorCommand}" Grid.Row="0" Grid.Column="0" Margin="40, 10, 10, 10" SensorState="{Binding SystemState.DoorSensor}" SensorName="Door sensor"></uc:SecuritySensor>
+            <uc:SecuritySensor StateChangedCommand="{Binding GlassSensorCommand}" Grid.Row="1" Grid.Column="0" Margin="40, 10, 10, 10" SensorState="{Binding SystemState.GlassSensor}" SensorName="Glass sensor"></uc:SecuritySensor>
+            <uc:SecuritySensor StateChangedCommand="{Binding MotionSensorCommand}" Grid.Row="2" Grid.Column="0" Margin="40, 10, 10, 10" SensorState="{Binding SystemState.MotionSensor}" SensorName="Motion sensor"></uc:SecuritySensor>
+
+            <uc:SecuritySensor Grid.Row="1" ReadOnly="True" Grid.Column="1" HorizontalAlignment="Center" SensorState="{Binding SystemState.AlarmState}" SensorName="Alarm"></uc:SecuritySensor>
         </Grid>
 
     </Grid>

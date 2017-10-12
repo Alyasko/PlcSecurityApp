@@ -11,6 +11,7 @@ using PlcSecurityApp.Core;
 using PlcSecurityApp.Core.Lib;
 using PlcSecurityApp.Models;
 using PlcSecurityApp.Views.Controls;
+using PlcSecurityApp.Views.UC;
 
 namespace PlcSecurityApp.ViewModels
 {
@@ -18,13 +19,12 @@ namespace PlcSecurityApp.ViewModels
     {
         private IPlcSimulator _simulator;
         private SystemState _systemState;
-        private string _doorSensorName = "Door Name from VM";
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
             //_simulator = new PlcSimulator();
-            SystemState = new SystemState();
 
             ConnectCommand = new DelegateCommand(ConnectCommandHandler);
             DoorSensorCommand = new DelegateCommand(DoorSensorCommandHandler);
@@ -36,33 +36,37 @@ namespace PlcSecurityApp.ViewModels
             MotionSensorViewModel = new SensorViewModel();
 
             _simulator?.Connect();
-            var currentState = _simulator?.GetSystemState();
+
+            SystemState = new SystemState();
         }
 
         private void GlassSensorCommandHandler(object obj)
         {
-            // MessageBox.Show("Glass Sensor");
+            SwitchSensorState(SystemState.GlassSensor, (x) => SystemState.GlassSensor = x);
+            _simulator.ModifySensor(SensorType.Glass, SystemState.GlassSensor);
         }
 
         private void MotionSensorCommandHandler(object o)
         {
-            // MessageBox.Show("Motion Sensor");
+            SwitchSensorState(SystemState.MotionSensor, (x) => SystemState.MotionSensor = x);
+            _simulator.ModifySensor(SensorType.Motion, SystemState.MotionSensor);
         }
 
+        
         private void DoorSensorCommandHandler(object o)
         {
-
+            SwitchSensorState(SystemState.DoorSensor, (x) => SystemState.DoorSensor = x);
+            _simulator.ModifySensor(SensorType.Door, SystemState.DoorSensor);
         }
-
-        private int _i = 0;
-        private SensorState _doorSensorState = SensorState.Ok;
 
         public void ConnectCommandHandler(object obj)
         {
-            // _simulator.Connect();
-            // For test now.
-            // SystemState.DoorSensor = SensorState.Alert;
-            DoorSensorState = SensorState.Alert;
+            SystemState.DoorSensor = SystemState.DoorSensor == SensorState.Ok ? SensorState.Alert : SensorState.Ok;
+        }
+
+        private void SwitchSensorState(SensorState currentState, Action<SensorState> action)
+        {
+            action(currentState == SensorState.Ok ? SensorState.Alert : SensorState.Ok);
         }
 
         private void UpdateSystemState(SystemState state)
@@ -87,28 +91,17 @@ namespace PlcSecurityApp.ViewModels
         public SensorViewModel MotionSensorViewModel { get; set; }
         public SensorViewModel GlassSensorViewModel { get; set; }
 
+
         public SystemState SystemState
         {
-            get
-            {
-                return _systemState;
-            }
+            get { return _systemState; }
             set
             {
-                _systemState = value; 
-                OnPropertyChanged();
+                _systemState = value;
+                OnPropertyChanged(nameof(SystemState));
             }
         }
 
-        public SensorState DoorSensorState
-        {
-            get { return _doorSensorState; }
-            set
-            {
-                _doorSensorState = value;
-                OnPropertyChanged(nameof(DoorSensorState));
-            }
-        }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {

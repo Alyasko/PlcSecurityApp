@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PlcSecurityApp.Views.UC;
 
 namespace PlcSecurityApp.Views.Controls
 {
@@ -20,22 +21,6 @@ namespace PlcSecurityApp.Views.Controls
     /// </summary>
     public partial class Sensor : UserControl, INotifyPropertyChanged
     {
-        public SensorState SensorState
-        {
-            get { return (SensorState)GetValue(SensorStateProperty); }
-            set
-            {
-                UpdateSensorState(value);
-                SetValue(SensorStateProperty, value);
-            }
-        }
-
-        // Using a DependencyProperty as the backing store for SensorState.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SensorStateProperty =
-            DependencyProperty.Register("SensorState", typeof(SensorState), typeof(Sensor), new PropertyMetadata(SensorState.Ok));
-
-
-
         public ICommand StateChangedCommand
         {
             get { return (ICommand)GetValue(StateChangedCommandProperty); }
@@ -77,14 +62,28 @@ namespace PlcSecurityApp.Views.Controls
             set
             {
                 _sensorText = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SensorText));
             }
         }
 
         public static readonly DependencyProperty SensorTextProperty =
-            DependencyProperty.Register("SensorText", typeof(string), typeof(Sensor), new PropertyMetadata(false));
+            DependencyProperty.Register("SensorText", typeof(string), typeof(Sensor), new PropertyMetadata(""));
 
-        private Brush _sensorFill;
+        public string SensorStateString
+        {
+            get { return (string)GetValue(SensorStateStringProperty); }
+            set
+            {
+                UpdateSensorState(value);
+                SetValue(SensorStateStringProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for SensorState.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SensorStateStringProperty =
+            DependencyProperty.Register("SensorStateString", typeof(string), typeof(Sensor), new PropertyMetadata("Ok"));
+
+        private Brush _sensorFill =  Brushes.CornflowerBlue;
         public Brush SensorFill
         {
             get { return _sensorFill; }
@@ -98,8 +97,10 @@ namespace PlcSecurityApp.Views.Controls
         public Sensor()
         {
             InitializeComponent();
+            //SensorText = "test";
+            //SensorState = SensorState.Ok;
 
-            SensorState = SensorState.Ok;
+            SensorStateString = SensorState.Ok.ToString();
         }
 
         private void Sensor_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -107,27 +108,44 @@ namespace PlcSecurityApp.Views.Controls
             if (OnlyOutput)
                 return;
 
-            if (SensorState == SensorState.Alert)
-                SensorState = SensorState.Ok;
-            else if (SensorState == SensorState.Ok)
-                SensorState = SensorState.Alert;
+            var state = GetSensorState(SensorStateString);
 
-            StateChangedCommand?.Execute(SensorState);
+            if (state == SensorState.Alert)
+                SensorStateString = GetSensorStateString(SensorState.Ok);
+            else if (state == SensorState.Ok)
+                SensorStateString = GetSensorStateString(SensorState.Alert);
+
+            StateChangedCommand?.Execute(GetSensorState(SensorStateString));
         }
 
-        private void UpdateSensorState(SensorState state)
+        private void UpdateSensorState(string stateString)
         {
-            switch (state)
+            switch (GetSensorState(stateString))
             {
                 case SensorState.Ok:
                     SensorText = "OK";
-                    SensorFill = Brushes.Green;
+                    //SensorFill = Brushes.Green;
                     break;
                 case SensorState.Alert:
                     SensorText = "ALERT";
-                    SensorFill = Brushes.Red;
+                    //SensorFill = Brushes.Red;
                     break;
             }
+        }
+
+        private SensorState GetSensorState(string stateString)
+        {
+            var state = SensorState.Ok;
+
+            if (!Enum.TryParse(stateString, out state))
+                throw new FormatException();
+
+            return state;
+        }
+
+        private string GetSensorStateString(SensorState state)
+        {
+            return state.ToString();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

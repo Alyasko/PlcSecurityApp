@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="PlcSecurityApp.Views.UC.SecuritySensor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:PlcSecurityApp.Views.Converters"
+             MouseDown="SecuritySensor_OnMouseDown"
+             x:Name="UC"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:SensorStateToFillConverter x:Key="SensorStateToFillConverter"></converters:SensorStateToFillConverter>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Ellipse Width="50" Height="50" Name="SensorEllipse" Fill="{Binding SensorState,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource SensorStateToFillConverter}}">
+            <Ellipse.Style>
+                <Style>
+                    <Style.Triggers>
+                        <Trigger Property="Ellipse.IsMouseOver" Value="True">
+                            <Setter Property="Ellipse.Opacity" Value="0.8"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>
+        <TextBlock IsHitTestVisible="False" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Text="{Binding SensorState, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"></TextBlock>
+        <TextBlock Margin="20" Grid.Column="1" VerticalAlignment="Center" Text="{Binding SensorName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"></TextBlock>
+    </Grid>
+</UserControl>

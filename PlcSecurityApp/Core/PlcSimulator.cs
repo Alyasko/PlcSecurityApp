@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using PlcSecurityApp.Models;
+using PlcSecurityApp.Views.UC;
 using S7PROSIMLib;
 
 namespace PlcSecurityApp.Core
@@ -32,6 +33,16 @@ namespace PlcSecurityApp.Core
             MessageBox.Show($"Output pin state: {state}");
 
             _proSim.WriteInputPoint(0, 0, true);
+        }
+
+        public void ReadSystemState(SystemState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ModifySensor(SensorType type, SensorState newState)
+        {
+            throw new NotImplementedException();
         }
 
         public SystemState GetSystemState()

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PlcSecurityApp.Views.Controls
+namespace PlcSecurityApp.Models
 {
-    public enum SensorState
+    public enum SensorType
     {
-        Ok,
-        Alert
+        Door,
+        Motion,
+        Glass
     }
 }
