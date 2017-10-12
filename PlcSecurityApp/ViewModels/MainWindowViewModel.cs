@@ -18,6 +18,7 @@ namespace PlcSecurityApp.ViewModels
     {
         private IPlcSimulator _simulator;
         private SystemState _systemState;
+        private string _doorSensorName = "Door Name from VM";
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
@@ -53,11 +54,15 @@ namespace PlcSecurityApp.ViewModels
 
         }
 
+        private int _i = 0;
+        private SensorState _doorSensorState = SensorState.Ok;
+
         public void ConnectCommandHandler(object obj)
         {
             // _simulator.Connect();
             // For test now.
-            SystemState.DoorSensor = SensorState.Alert;
+            // SystemState.DoorSensor = SensorState.Alert;
+            DoorSensorState = SensorState.Alert;
         }
 
         private void UpdateSystemState(SystemState state)
@@ -92,6 +97,16 @@ namespace PlcSecurityApp.ViewModels
             {
                 _systemState = value; 
                 OnPropertyChanged();
+            }
+        }
+
+        public SensorState DoorSensorState
+        {
+            get { return _doorSensorState; }
+            set
+            {
+                _doorSensorState = value;
+                OnPropertyChanged(nameof(DoorSensorState));
             }
         }
 

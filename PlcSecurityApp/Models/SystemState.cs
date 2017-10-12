@@ -7,20 +7,11 @@ using PlcSecurityApp.Views.Controls;
 
 namespace PlcSecurityApp.Models
 {
-    public class SystemState : INotifyPropertyChanged
+    public class SystemState
     {
         private SensorState _doorSensor = SensorState.Alert;
 
-        public SensorState DoorSensor
-        {
-            get { return _doorSensor; }
-            set
-            {
-                _doorSensor = value;
-                OnPropertyChanged(nameof(DoorSensor));
-            }
-        }
-
+        public SensorState DoorSensor { get; set; } = SensorState.Ok;
         public SensorState MotionSensor { get; set; } = SensorState.Ok;
         public SensorState GlassSensor { get; set; } = SensorState.Ok;
 

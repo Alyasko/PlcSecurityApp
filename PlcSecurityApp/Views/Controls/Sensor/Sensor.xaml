@@ -13,7 +13,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Ellipse Width="50" Height="50" Name="SensorEllipse" Fill="{Binding SensorFill, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <Ellipse Width="50" Height="50" Name="SensorEllipse" Fill="{Binding SensorFill, ElementName=Root}">
             <Ellipse.Style>
                 <Style>
                     <Style.Triggers>

@@ -35,7 +35,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <controls:Sensor SensorState="{Binding SystemState.DoorSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Margin="10" StateChangedCommand="{Binding DoorSensorCommand}" SensorName="Door sensor"></controls:Sensor>
+            <controls:Sensor SensorState="{Binding DoorSensorState}" Grid.Row="0" Grid.Column="0" Margin="10" StateChangedCommand="{Binding DoorSensorCommand}" SensorName="Door sensor"></controls:Sensor>
             <controls:Sensor Grid.Row="1" Grid.Column="0" Margin="10" StateChangedCommand="{Binding MotionSensorCommand}" SensorName="Motion sensor"></controls:Sensor>
             <controls:Sensor Grid.Row="2" Grid.Column="0" Margin="10" StateChangedCommand="{Binding GlassSensorCommand}" SensorName="Glass sensor"></controls:Sensor>
             
