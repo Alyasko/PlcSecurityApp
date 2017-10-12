@@ -23,7 +23,6 @@
             <MenuItem Header="Simulator">
                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Test" Command="{Binding ConnectCommand}"></MenuItem>
         </Menu>
 
         <Grid Grid.Row="1">

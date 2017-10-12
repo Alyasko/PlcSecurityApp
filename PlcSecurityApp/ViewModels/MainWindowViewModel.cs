@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -19,12 +20,16 @@ namespace PlcSecurityApp.ViewModels
     {
         private IPlcSimulator _simulator;
         private SystemState _systemState;
+        private string _windowTitle;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private const string AppName = "PLC Security App";
+        private const string NotConnected = " - Not Connected";
+
         public MainWindowViewModel()
         {
-            //_simulator = new PlcSimulator();
+            WindowTitle = AppName + NotConnected;
 
             ConnectCommand = new DelegateCommand(ConnectCommandHandler);
             DoorSensorCommand = new DelegateCommand(DoorSensorCommandHandler);
@@ -35,33 +40,70 @@ namespace PlcSecurityApp.ViewModels
             GlassSensorViewModel = new SensorViewModel();
             MotionSensorViewModel = new SensorViewModel();
 
-            _simulator?.Connect();
-
             SystemState = new SystemState();
+        }
+
+        private void Initialize()
+        {
+            try
+            {
+                CreateSimulator();
+                InitializeSensors();
+
+                WindowTitle = AppName;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Unable to connect to simulator.\n{e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //Application.Current.Shutdown();
+            }
+        }
+
+        private void InitializeSensors()
+        {
+            SystemState.Reset();
+            _simulator.ResetSensors();
+        }
+
+        private void CreateSimulator()
+        {
+            _simulator = new PlcSimulator();
+            _simulator.Connect();
         }
 
         private void GlassSensorCommandHandler(object obj)
         {
             SwitchSensorState(SystemState.GlassSensor, (x) => SystemState.GlassSensor = x);
-            _simulator.ModifySensor(SensorType.Glass, SystemState.GlassSensor);
+            _simulator?.ModifySensor(SensorType.Glass, SystemState.GlassSensor);
+
+            UpdateOutput();
         }
 
         private void MotionSensorCommandHandler(object o)
         {
             SwitchSensorState(SystemState.MotionSensor, (x) => SystemState.MotionSensor = x);
-            _simulator.ModifySensor(SensorType.Motion, SystemState.MotionSensor);
+            _simulator?.ModifySensor(SensorType.Motion, SystemState.MotionSensor);
+
+            UpdateOutput();
         }
 
-        
+
         private void DoorSensorCommandHandler(object o)
         {
             SwitchSensorState(SystemState.DoorSensor, (x) => SystemState.DoorSensor = x);
-            _simulator.ModifySensor(SensorType.Door, SystemState.DoorSensor);
+            _simulator?.ModifySensor(SensorType.Door, SystemState.DoorSensor);
+
+            UpdateOutput();
+        }
+
+        private void UpdateOutput()
+        {
+            SystemState.AlarmState = _simulator != null ? _simulator.ReadAlarmState() : SensorState.Ok;
         }
 
         public void ConnectCommandHandler(object obj)
         {
-            SystemState.DoorSensor = SystemState.DoorSensor == SensorState.Ok ? SensorState.Alert : SensorState.Ok;
+            Initialize();
         }
 
         private void SwitchSensorState(SensorState currentState, Action<SensorState> action)
@@ -71,7 +113,7 @@ namespace PlcSecurityApp.ViewModels
 
         private void UpdateSystemState(SystemState state)
         {
-            
+
         }
 
         private SensorState ConvertBoolToSensorState(bool state)
@@ -79,7 +121,15 @@ namespace PlcSecurityApp.ViewModels
             return state ? SensorState.Ok : SensorState.Alert;
         }
 
-        public String WindowTitle { get; set; } = "PLC Security App";
+        public String WindowTitle
+        {
+            get { return _windowTitle; }
+            set
+            {
+                _windowTitle = value;
+                OnPropertyChanged(nameof(WindowTitle));
+            }
+        }
 
         public ICommand ConnectCommand { get; set; }
 

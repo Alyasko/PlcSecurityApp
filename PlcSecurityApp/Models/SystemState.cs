@@ -17,6 +17,11 @@ namespace PlcSecurityApp.Models
 
         public SystemState()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
             DoorSensor = SensorState.Ok;
             MotionSensor = SensorState.Ok;
             GlassSensor = SensorState.Ok;
@@ -70,6 +75,11 @@ namespace PlcSecurityApp.Models
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public override string ToString()
+        {
+            return $"Door: {DoorSensor}, Glass: {GlassSensor}, Motion: {MotionSensor} Alarm: {AlarmState}";
         }
     }
 }

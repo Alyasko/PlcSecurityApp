@@ -79,6 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\PinConfig.cs" />
     <Compile Include="Models\SensorType.cs" />
     <Compile Include="Views\Converters\SensorStateToFillConverter.cs" />
     <Compile Include="Views\UC\SecuritySensor.xaml.cs">
